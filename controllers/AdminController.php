@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 
+use app\models\AddAdminForm;
 use app\models\LoginForm;
 use Yii;
 use yii\filters\AccessControl;
@@ -34,16 +35,6 @@ class AdminController extends Controller
         ];
     }
 
-    public function actions()
-    {
-        return [
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
-        ];
-    }
-
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
@@ -65,5 +56,16 @@ class AdminController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionAddAdmin() {
+        $model = new AddAdminForm();
+        if ($model->load(Yii::$app->request->post()) && $model->add()) {
+            return $this->goBack();
+        } else {
+            return $this->render('add-admin', [
+                'model' => $model,
+            ]);
+        }
     }
 }

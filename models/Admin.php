@@ -79,7 +79,7 @@ class Admin extends ActiveRecord implements IdentityInterface
         return [
             [['email', 'password'], 'required'],
             [['created_by'], 'integer'],
-            [['created', 'last_access'], 'safe'],
+            [['created', 'last_access', 'access_token', 'auth_key'], 'safe'],
             [['email'], 'string', 'max' => 45],
             [['password'], 'string', 'max' => 60],
             [['email'], 'unique']
@@ -179,4 +179,41 @@ class Admin extends ActiveRecord implements IdentityInterface
     {
         return $this->auth_key === $authKey;
     }
+
+    /**
+     * This method is called at the beginning of inserting or updating a record.
+     * The default implementation will trigger an [[EVENT_BEFORE_INSERT]] event when `$insert` is true,
+     * or an [[EVENT_BEFORE_UPDATE]] event if `$insert` is false.
+     * When overriding this method, make sure you call the parent implementation like the following:
+     *
+     * ~~~
+     * public function beforeSave($insert)
+     * {
+     *     if (parent::beforeSave($insert)) {
+     *         // ...custom code here...
+     *         return true;
+     *     } else {
+     *         return false;
+     *     }
+     * }
+     * ~~~
+     *
+     * @param boolean $insert whether this method called while inserting a record.
+     *                        If false, it means the method is called while updating a record.
+     *
+     * @return boolean whether the insertion or updating should continue.
+     * If false, the insertion or updating will be cancelled.
+     */
+    public function beforeSave($insert)
+    {
+        if(!parent::beforeSave($insert)) return false;
+
+        if($this->isNewRecord) {
+            $this->created = date('Y-m-d H:i:s');
+        }
+
+        return true;
+    }
+
+
 }

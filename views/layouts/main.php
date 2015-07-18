@@ -9,6 +9,8 @@ use app\assets\AppAsset;
 /* @var $content string */
 
 AppAsset::register($this);
+nezhelskoy\highlight\HighlightAsset::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

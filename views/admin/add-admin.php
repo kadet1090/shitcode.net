@@ -6,7 +6,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\LoginForm */
 
-$this->title = 'Login';
+$this->title = 'Add Admin';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
@@ -24,12 +24,6 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
 
     <?= $form->field($model, 'email') ?>
-
-    <?= $form->field($model, 'password')->passwordInput() ?>
-
-    <?= $form->field($model, 'rememberMe', [
-        'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-    ])->checkbox() ?>
 
     <div class="form-group">
         <div class="col-lg-offset-1 col-lg-11">

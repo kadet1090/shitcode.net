@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b1cc6c8c161c72bb689cfba0d4e1fd86",
+    "hash": "25e0817702d6fc47e265edd89de14493",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -315,6 +315,49 @@
                 "html"
             ],
             "time": "2013-11-30 08:25:19"
+        },
+        {
+            "name": "nezhelskoy/yii2-highlight",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nezhelskoy/yii2-highlight.git",
+                "reference": "a3fa4633a34ee4d99f69d01aaa6588e9ce098730"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nezhelskoy/yii2-highlight/zipball/a3fa4633a34ee4d99f69d01aaa6588e9ce098730",
+                "reference": "a3fa4633a34ee4d99f69d01aaa6588e9ce098730",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "yiisoft/yii2": "~2"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "nezhelskoy\\highlight\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Dmitry Nezhelskoy",
+                    "email": "dmitry@nezhelskoy.ru",
+                    "homepage": "http://nezhelskoy.ru"
+                }
+            ],
+            "description": "Yii2 highlight.js extension",
+            "keywords": [
+                "highlight",
+                "highlight.js",
+                "yii2"
+            ],
+            "time": "2015-05-29 22:03:28"
         },
         {
             "name": "swiftmailer/swiftmailer",
