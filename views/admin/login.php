@@ -11,6 +11,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
+    <?= \Yii::$app->security->generatePasswordHash('admin') ?>
 
     <p>Please fill out the following fields to login:</p>
 
@@ -23,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'username') ?>
+    <?= $form->field($model, 'email') ?>
 
     <?= $form->field($model, 'password')->passwordInput() ?>
 
