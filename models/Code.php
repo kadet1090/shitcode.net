@@ -14,7 +14,7 @@ use Yii;
  * @property string $description
  * @property string $language
  * @property string $code
- * @property bool $approved
+ * @property int $approved
  * @property integer $approved_by
  * @property string $added_at
  *
@@ -37,7 +37,7 @@ class Code extends \yii\db\ActiveRecord
     {
         return [
             [['ip'], 'integer'],
-            [['approved'], 'boolean'],
+            [['approved'], 'integer'],
             [['description', 'code'], 'string'],
             [['added_at', 'approved_by'], 'safe'],
             [['author'], 'string', 'max' => 45],
