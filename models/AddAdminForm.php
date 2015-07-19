@@ -11,6 +11,7 @@ use yii\base\Model;
 class AddAdminForm extends Model
 {
     public $email;
+    public $message;
 
     /**
      * @return array the validation rules.
@@ -18,8 +19,8 @@ class AddAdminForm extends Model
     public function rules()
     {
         return [
-            // username and password are both required
             [['email'], 'email'],
+            [['message'], 'safe']
         ];
     }
 
@@ -38,11 +39,21 @@ class AddAdminForm extends Model
             ]);
 
             $admin->link('createdBy', Yii::$app->user->identity);
+
+            $host = Yii::$app->request->serverName;
+
             if($admin->save()) {
                 $content = <<<MAIL
-Someone gave you admin access on happycode.io
-You can use this mail and password $password to login.
+Someone gave you admin access on {$host}.
+You can now log in using:
+Email: {$this->email}
+Password: $password
+
+You can change this generated password if you only want.
 MAIL;
+                if(!empty($this->message)) {
+                    $content .= PHP_EOL.PHP_EOL.'PS '.$this->message;
+                }
 
                 Yii::$app->mailer
                     ->compose()

@@ -4,8 +4,10 @@ namespace app\controllers;
 
 
 use app\models\AddAdminForm;
+use app\models\Admin;
 use app\models\LoginForm;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -67,5 +69,16 @@ class AdminController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionAdmins() {
+        $query = Admin::find()->with('createdBy');
+        $admins = new ActiveDataProvider([
+            'query' => $query
+        ]);
+
+        return $this->render('admins', [
+            'admins' => $admins,
+        ]);
     }
 }
