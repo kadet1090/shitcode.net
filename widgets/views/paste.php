@@ -2,9 +2,9 @@
     /** @var \app\models\Code $model  */
     $parsedown = Parsedown::instance();
 ?>
-<div class="paste panel panel-default">
+<div class="paste panel panel-default" id="paste-<?=$model->id?>">
     <div class="panel-heading">
-        <a href="#" class="title">#<?= $model->id ?> <?= $model->title ?></a>
+        <a href="<?= \yii\helpers\Url::to(['site/paste', 'id' => $model->id ])?>" class="title">#<?= $model->id ?> <?= $model->title ?></a>
         <a href="#" class="language pull-right"><?= array_search($model->language, Yii::$app->params['languages']) ?></a>
     </div>
     <div class="panel-body">
@@ -13,16 +13,7 @@
     </div>
     <div class="panel-footer">
         <div class="btn-group actions">
-            <a href="#" class="btn btn-success">
-                <span class="glyphicon glyphicon-thumbs-up"></span>
-            </a>
-            <a href="#" class="btn btn-danger">
-                <span class="glyphicon glyphicon-thumbs-down"></span>
-            </a>
-            <a href="#" class="btn btn-info">
-                <span class="glyphicon glyphicon-comment"></span>
-                15
-            </a>
+            <?php foreach($actions as $action) echo $action ?>
         </div>
         <div class="author pull-right">
             <?= Yii::t('happycode', 'By <em>{author}</em>', ['author' => $model->author ]) ?>,

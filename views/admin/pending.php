@@ -1,5 +1,6 @@
 <?php
 use app\models\Code;
+use app\widgets\Paste;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -13,40 +14,26 @@ $parsedown = Parsedown::instance();
 <div class="alerts">
 
 </div>
-<?php /** @var Code $paste */ foreach($pending->models as $paste): ?>
-    <div class="well" id="paste-<?=$paste->id?>">
-        <h4><strong>#<?= $paste->id ?></strong> <?= $paste->title ?></h4>
-        <div class="row">
-            <div class="col-md-4">
-                <strong><?= $paste->getAttributeLabel('language') ?>:</strong> <?= $paste->language ?> <br />
-
-                <?php if(!empty($paste->author)): ?>
-                    <strong><?= $paste->getAttributeLabel('author') ?>:</strong> <?= $paste->author ?> <br />
-                <?php endif; ?>
-                <?php if(!empty($paste->description)): ?>
-                    <hr />
-                    <?= $parsedown->parse($paste->description) ?>
-                <?php endif; ?>
-
-                <div class="btn-group pull-right" role="group" aria-label="Actions">
-                    <a class="btn btn-success accept-action"
-                       data-id="<?= $paste->id ?>"
-                       href="<?= \yii\helpers\Url::to(['admin/change-status', 'id' => $paste->id, 'status' => 1]) ?>">
-                        <span aria-hidden="true" class="glyphicon glyphicon-ok"></span> Accept
-                    </a>
-                    <a class="btn btn-danger decline-action"
-                       data-id="<?= $paste->id ?>"
-                       href="<?= \yii\helpers\Url::to(['admin/change-status', 'id' => $paste->id, 'status' => -1]) ?>">
-                        <span aria-hidden="true" class="glyphicon glyphicon-remove"></span> Decline
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <pre><code class="lang-<?= $paste->language ?>"><?= $paste->code ?></code></pre>
-            </div>
-        </div>
-    </div>
-<?php endforeach; ?>
+<?php /** @var Code $paste */ foreach($pending->models as $paste) {
+    echo Paste::widget(['model' => $paste, 'actions' => [
+        \yii\helpers\Html::a(
+            '<span aria-hidden="true" class="glyphicon glyphicon-ok"></span> Approve',
+            ['admin/change-status', 'id' => $paste->id, 'status' => 1],
+            [
+                'class' => 'btn btn-success accept-action',
+                'data-id' => $paste->id
+            ]
+        ),
+        \yii\helpers\Html::a(
+            '<span aria-hidden="true" class="glyphicon glyphicon-remove"></span> Decline',
+            ['admin/change-status', 'id' => $paste->id, 'status' => -1],
+            [
+                'class' => 'btn btn-danger decline-action',
+                'data-id' => $paste->id
+            ]
+        ),
+    ]]);
+} ?>
 
 <?php
 $url = \yii\helpers\Url::to(['admin/change-status']);

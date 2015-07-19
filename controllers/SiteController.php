@@ -68,6 +68,15 @@ class SiteController extends Controller
         }
     }
 
+    public function actionPaste() {
+        $id = Yii::$app->request->getQueryParam('id');
+        $model = Code::findOne($id);
+
+        return $this->render('paste', [
+            'model' => $model,
+        ]);
+    }
+
     public function actionAbout()
     {
         return $this->render('about');

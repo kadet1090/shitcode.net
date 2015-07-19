@@ -20,11 +20,13 @@ use yii\base\Widget;
 class Paste extends Widget
 {
     public $model = null;
+    public $actions = [];
 
     public function run()
     {
         return $this->render('paste', [
             'model' => $this->model,
+            'actions' => $this->actions
         ]);
     }
 }
