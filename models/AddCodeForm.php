@@ -25,8 +25,8 @@ class AddCodeForm extends Model
     {
         return [
             // name, email, subject and body are required
-            [['code', 'language', 'title'], 'required'],
-            [['author', 'description'], 'safe'],
+            [['code', 'language'], 'required'],
+            [['author', 'description', 'title'], 'safe'],
             [['author'], 'string', 'max' => 45],
             [['title'], 'string', 'max' => 200],
             [['language'], 'string', 'max' => 24],
