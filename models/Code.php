@@ -65,6 +65,29 @@ class Code extends \yii\db\ActiveRecord
         ];
     }
 
+    public static function findWithScore()
+    {
+        // TODO: replace that sweet monster with something more appropriate
+        $query = Code::find()->from(
+            <<<'SQL'
+(
+    select c.*, sum(v.vote) as score
+    from code c left join votes v on v.snippet_id = c.id
+    group by c.id
+
+    union
+
+    select c.*, sum(v.vote) as score
+    from code c
+    left join votes v on v.snippet_id = c.id
+    where v.snippet_id is null
+) as code
+SQL
+        );
+
+        return $query;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

@@ -5,7 +5,7 @@
 <div class="paste panel panel-default" id="paste-<?=$model->id?>">
     <div class="panel-heading">
         <a href="<?= \yii\helpers\Url::to(['site/paste', 'id' => $model->id ])?>" class="title">#<?= $model->id ?> <?= $model->title ?></a>
-        <a href="#" class="language pull-right"><?= array_search($model->language, Yii::$app->params['languages']) ?></a>
+        <a href="<?= \yii\helpers\Url::to([Yii::$app->requestedAction->uniqueId, 'language' => $model->language]) ?>" class="language pull-right"><?= array_search($model->language, Yii::$app->params['languages']) ?></a>
     </div>
     <div class="panel-body">
         <pre><code class="lang-<?= $model->language ?>"><?= htmlspecialchars($model->code) ?></code></pre>

@@ -27,9 +27,39 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        $query = Code::find()->where(['approved' => 1]);
+        return $this->_sorted('id', SORT_ASC);
+    }
+
+    public function actionLatest()
+    {
+        return $this->_sorted('id', SORT_DESC);
+    }
+
+    public function actionBest()
+    {
+        return $this->_sorted('score', SORT_ASC);
+    }
+
+    public function actionWorst()
+    {
+        return $this->_sorted('score', SORT_DESC);
+    }
+
+    private function _sorted($field, $sort) {
+        $lang = Yii::$app->request->getQueryParam('language');
+
+        $conditions = ['approved' => 1];
+        if($lang)
+            $conditions['language'] = $lang;
+
+        $query = $field != 'score' ? Code::find() : Code::findWithScore();
+        $query->where($conditions)->orderBy([$field => $sort]);
+
         $models = new ActiveDataProvider([
-            'query' => $query
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => Yii::$app->params['per-page'],
+            ],
         ]);
 
         return $this->render('index', [
