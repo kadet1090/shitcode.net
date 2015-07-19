@@ -4,7 +4,9 @@ namespace app\controllers;
 
 use app\helpers\AlertHelper;
 use app\models\AddCodeForm;
+use app\models\Code;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use app\models\ContactForm;
 
@@ -25,7 +27,14 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $query = Code::find()->where(['approved' => 1]);
+        $models = new ActiveDataProvider([
+            'query' => $query
+        ]);
+
+        return $this->render('index', [
+            'models' => $models
+        ]);
     }
 
     public function actionContact()
