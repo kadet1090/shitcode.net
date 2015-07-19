@@ -58,7 +58,7 @@ class AddCodeForm extends Model
                 'author' => $this->author,
                 'title' => $this->title,
                 'description' => $this->description,
-                'approved' => false,
+                'approved' => 0,
                 'ip' => ip2long(Yii::$app->request->userIP)
             ]);
 

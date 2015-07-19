@@ -16,4 +16,5 @@ New paste <strong>#<?= $paste->id ?></strong> Was added from ip: <em><?= long2ip
 
 <br/>
 You can:<br/>
-<a href="#">Accept</a> or <a href="#">Decline it</a>.
+<a href="<?= \yii\helpers\Url::to(['admin/change-status', 'id' => $paste->id, 'status' => 1], true) ?>">Accept</a> or
+<a href="<?= \yii\helpers\Url::to(['admin/change-status', 'id' => $paste->id, 'status' => -1], true) ?>">Decline it</a>.

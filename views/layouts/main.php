@@ -1,4 +1,5 @@
 <?php
+use app\helpers\AlertHelper;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
@@ -54,6 +55,7 @@ nezhelskoy\highlight\HighlightAsset::register($this);
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
+            <?= AlertHelper::render(); ?>
             <?= $content ?>
         </div>
     </div>

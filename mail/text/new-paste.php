@@ -12,4 +12,5 @@ Code:
 <?= $paste->code ?>
 
 You can:
-Accept or Decline it.
+Accept (<?= \yii\helpers\Url::to(['admin/change-status', 'id' => $paste->id, 'status' => 1], true) ?>) or
+Decline (<?= \yii\helpers\Url::to(['admin/change-status', 'id' => $paste->id, 'status' => -1], true) ?>) it.

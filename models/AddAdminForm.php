@@ -56,7 +56,7 @@ MAIL;
                 }
 
                 Yii::$app->mailer
-                    ->compose('html')
+                    ->compose()
                     ->setTo($this->email)
                     ->setFrom(Yii::$app->params['adminEmail'])
                     ->setSubject("Admin account on happycode was created for you")

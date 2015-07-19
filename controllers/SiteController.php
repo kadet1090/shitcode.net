@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\helpers\AlertHelper;
 use app\models\AddCodeForm;
 use Yii;
 use yii\web\Controller;
@@ -45,7 +46,12 @@ class SiteController extends Controller
     {
         $model = new AddCodeForm();
         if ($model->load(Yii::$app->request->post()) && $model->add()) {
-            return $this->refresh();
+            AlertHelper::appendAlert(
+                'success',
+                Yii::t('happycode', 'Your paste was successfully added and is currently waiting for administrator to approve it.')
+            );
+
+            return $this->redirect(['site/index']);
         } else {
             return $this->render('add-code', [
                 'model' => $model,

@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 
+use app\helpers\AlertHelper;
 use app\models\AddAdminForm;
 use app\models\Admin;
 use app\models\Code;
@@ -12,6 +13,7 @@ use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 class AdminController extends Controller
@@ -66,6 +68,7 @@ class AdminController extends Controller
     {
         $model = new AddAdminForm();
         if ($model->load(Yii::$app->request->post()) && $model->add()) {
+            AlertHelper::appendAlert('success', Yii::t('happycode', 'Added {email} to administrators.', ['email' => $model->email]));
             return $this->goBack();
         } else {
             return $this->render('add-admin', [
@@ -102,10 +105,16 @@ class AdminController extends Controller
         $status = Yii::$app->request->getQueryParam('status');
 
         $code = Code::findOne($id);
+        if($code == null) throw new NotFoundHttpException(Yii::t('happycode', 'Given ID was not found in database.'));
+
         $code->approved = $status;
         $code->save();
 
-
+        $message = Yii::t('happycode', $status == 1 ?
+            'Paste <strong>#{id}</strong> was successfully approved.' :
+            'Paste <strong>#{id}</strong> was successfully declined.',
+            ['id' => $id]
+        );
 
         if(Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
@@ -113,13 +122,11 @@ class AdminController extends Controller
             return [
                 'id' => $id,
                 'status' => $status,
-                'message' => Yii::t('happycode', $status == 1 ?
-                    'Paste <strong>#{id}</strong> was successfully approved.' :
-                    'Paste <strong>#{id}</strong> was successfully declined.'
-                , ['id' => $id])
+                'message' => $message
             ];
         } else {
-
+            AlertHelper::appendAlert('success', $message);
+            return $this->redirect(['admin/pending']);
         }
     }
 
