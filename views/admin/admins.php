@@ -4,10 +4,15 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $admins \yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('happycode', 'Admins list');
+$this->title = Yii::t('happycode', 'Administrators');
 $this->params['breadcrumbs'][] = $this->title;
+?>
 
-echo GridView::widget([
+<a href="<?= \yii\helpers\Url::to(['admin/add-admin'])?>" class="btn btn-success pull-right">
+    <?= Yii::t('happycode', 'Add admin') ?>
+</a>
+
+<?= GridView::widget([
     'dataProvider' => $admins,
     'columns' => [
         ['class' => \yii\grid\SerialColumn::className()],
@@ -25,4 +30,4 @@ echo GridView::widget([
         ],
         'last_access'
     ]
-]);
+]); ?>

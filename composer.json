@@ -18,7 +18,9 @@
         "yiisoft/yii2": ">=2.0.4",
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
-        "nezhelskoy/yii2-highlight": "~1.2"
+        "nezhelskoy/yii2-highlight": "~1.2",
+        "trntv/yii2-aceeditor": "~2.0",
+        "erusev/parsedown": "~1.5"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

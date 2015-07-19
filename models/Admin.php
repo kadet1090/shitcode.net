@@ -18,6 +18,7 @@ use yii\web\IdentityInterface;
  * @property string  $last_access
  * @property string  $access_token
  * @property string  $auth_key
+ * @property bool    $inform
  *
  * @property Admin   $createdBy
  * @property Admin[] $createdAdmins

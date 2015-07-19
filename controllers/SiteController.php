@@ -2,11 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\AddCodeForm;
 use Yii;
-use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
 use app\models\ContactForm;
 
 class SiteController extends Controller
@@ -38,6 +36,18 @@ class SiteController extends Controller
             return $this->refresh();
         } else {
             return $this->render('contact', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    public function actionAdd()
+    {
+        $model = new AddCodeForm();
+        if ($model->load(Yii::$app->request->post()) && $model->add()) {
+            return $this->refresh();
+        } else {
+            return $this->render('add-code', [
                 'model' => $model,
             ]);
         }
