@@ -6,6 +6,7 @@ namespace app\controllers;
 use app\helpers\AlertHelper;
 use app\models\AddAdminForm;
 use app\models\Admin;
+use app\models\ChangePasswordForm;
 use app\models\Code;
 use app\models\LoginForm;
 use Yii;
@@ -31,12 +32,6 @@ class AdminController extends Controller
                     ],
                 ],
             ],
-            'verbs'  => array(
-                'class'   => VerbFilter::className(),
-                'actions' => array(
-                    'logout' => array('post'),
-                ),
-            ),
         ];
     }
 
@@ -129,6 +124,18 @@ class AdminController extends Controller
         }
     }
 
+    public function actionChangePassword() {
+        $model = new ChangePasswordForm();
+        if ($model->load(Yii::$app->request->post()) && $model->change()) {
+            AlertHelper::appendAlert('success', Yii::t('happycode', 'Your password was changed.'));
+            return $this->goBack();
+        } else {
+            return $this->render('change-password', [
+                'model' => $model,
+            ]);
+        }
+    }
+    
     /**
      * @inheritdoc
      */

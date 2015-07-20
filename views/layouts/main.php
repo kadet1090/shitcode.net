@@ -95,7 +95,7 @@ $this->registerJs($affix);
                             <?php if(!Yii::$app->user->isGuest): ?>
                             <li class="dropdown">
                                 <a class="dropdown-toggle" href="#" data-toggle="dropdown">
-                                    admin <span class="caret"></span>
+                                    Admin <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li><a href="<?= \yii\helpers\Url::to(['admin/pending']) ?>"><?= Yii::t('happycode', 'Pending'); ?> <span class="badge"><?= \app\models\Code::countPending() ?></span></a></li>
@@ -121,7 +121,8 @@ $this->registerJs($affix);
 
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; My Company <?= date('Y') ?>, <?= Yii::powered() ?></p>
+            <p class="pull-left">&copy; Kadet <?= date('Y') ?>, <?= Yii::powered() ?></p>
+            <p class="pull-right"><?= Html::a('Admin', ['admin/login']) ?></p>
         </div>
     </footer>
 
