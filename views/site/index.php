@@ -9,6 +9,7 @@ $this->title = 'ShitCode';
 $counts = array_map(function($l) { return $l['count']; }, $languages);
 $max = max($counts);
 
+$this->registerJsFile('js/voting.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
 ?>
 <div class="alerts fixed"></div>
 <div class="container pastes">
@@ -32,10 +33,10 @@ $max = max($counts);
 
     <?php foreach($models->models as $model)
         echo Paste::widget(['model' => $model, 'actions' => [
-            \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-up"></span>', ['site/vote', 'id' => $model->id, 'vote' => 1], [
+            \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-up"></span>', ['site/vote', 'id' => $model->id, 'vote' => 'up'], [
                 'class' => 'btn btn-success vote-up'.($model->canVote ? '' : ' disabled')
             ]),
-            \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-down"></span>', ['site/vote', 'id' => $model->id, 'vote' => -1], [
+            \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-down"></span>', ['site/vote', 'id' => $model->id, 'vote' => 'down'], [
                 'class' => 'btn btn-danger vote-down'.($model->canVote ? '' : ' disabled')
             ]),
             \yii\helpers\Html::a('Comments', ['site/paste', 'id' => $model->id, '#' => 'disqus_thread'], ['class' => 'btn btn-info']),
@@ -44,39 +45,6 @@ $max = max($counts);
 
     <?= \yii\widgets\LinkPager::widget(['pagination' => $models->pagination]); ?>
 </div>
-
-<?php
-$url = \yii\helpers\Url::to(['admin/vote']);
-
-$script = <<< JS
-$('.vote-up, .vote-down').on('click', function(e) {
-    $.ajax({
-        url: $(this).attr('href')
-    }).always(function(data) {
-        var type = 'success';
-        if(typeof data.responseJSON !== "undefined") {
-            data = data.responseJSON;
-            type = 'danger';
-        }
-
-        var alert = $('<div class="alert alert-' + type + ' alert-dismissible" id="alert-' + data.id + '">' +
-            '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-            data.message +
-        '</div>').hide().appendTo('.alerts').slideDown();
-
-        setTimeout(function() {
-            alert.slideUp(250, function() {
-                alert.remove();
-            })
-        }, 1500);
-    });
-
-    e.preventDefault();
-});
-JS;
-$this->registerJs($script);
-?>
-
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = 'shit-code';

@@ -27,7 +27,7 @@ $config = [
             // Disable r= routes
             'enablePrettyUrl' => true,
             'rules' => array(
-                'vote/<id:\d+>/<vote:(-?[01])>' => 'site/vote',
+                'vote/<vote:(up|down)>/<id:\d+>' => 'site/vote',
                 '<action:\w+>/language/<language:\w+>' => 'site/<action>',
                 '<id:\d+>' => 'site/paste',
                 '<action:\w+>' => 'site/<action>',
@@ -38,7 +38,7 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'mailer' => require(__DIR__ . '/db.php'),
+        'mailer' => require(__DIR__ . '/mailer.php'),
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [

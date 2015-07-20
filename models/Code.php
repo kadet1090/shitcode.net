@@ -7,18 +7,19 @@ use Yii;
 /**
  * This is the model class for table "code".
  *
- * @property string $id
- * @property string $ip
- * @property string $author
- * @property string $title
- * @property string $description
- * @property string $language
- * @property string $code
- * @property int $approved
+ * @property string  $id
+ * @property string  $ip
+ * @property string  $author
+ * @property string  $title
+ * @property string  $description
+ * @property string  $language
+ * @property string  $code
+ * @property integer $approved
  * @property integer $approved_by
- * @property string $added_at
+ * @property string  $added_at
+ * @property integer $score
  *
- * @property Admin $approvedBy
+ * @property Admin   $approvedBy
  */
 class Code extends \yii\db\ActiveRecord
 {
@@ -32,27 +33,17 @@ class Code extends \yii\db\ActiveRecord
         return 'code';
     }
 
-    public static function findWithScore()
+    public static function recalculateScore($id = null)
     {
-        // TODO: replace that sweet monster with something more appropriate
-        $query = Code::find()->from(
-            <<<'SQL'
-(
-    select c.*, sum(v.vote) as score
-    from code c left join votes v on v.snippet_id = c.id
-    group by c.id
+        $sql = 'UPDATE `code` SET `score` = (
+	        SELECT SUM(vote) FROM `votes` WHERE `votes`.`snippet_id` = `code`.`id` GROUP BY `votes`.`snippet_id`
+        )';
 
-    union
+        if ($id !== null) {
+            $sql .= ' WHERE `code`.`id` = :id';
+        }
 
-    select c.*, sum(v.vote) as score
-    from code c
-    left join votes v on v.snippet_id = c.id
-    where v.snippet_id is null
-) as code
-SQL
-        );
-
-        return $query;
+        Yii::$app->db->createCommand($sql, $id === null ? [] : ['id' => $id])->execute();
     }
 
     public static function getLanguages()
@@ -66,17 +57,20 @@ SQL
             ->asArray()
             ->all();
 
-        return array_map(function($language) use ($labels) {
+        return array_map(function ($language) use ($labels) {
             return [
-                'label' => $labels[$language['language']],
+                'label'    => $labels[$language['language']],
                 'language' => $language['language'],
-                'count' => $language['count'],
+                'count'    => $language['count'],
             ];
         }, $count);
     }
 
-    public static function countPending() {
-        return Code::find()->where(['approved' => 0])->count();
+    public static function countPending()
+    {
+        static $count = null;
+
+        return $count === null ? $count = Code::find()->where(['approved' => 0])->count() : $count;
     }
 
     /**
@@ -101,30 +95,32 @@ SQL
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('happycode', 'ID'),
-            'ip' => Yii::t('happycode', 'IP Address'),
-            'author' => Yii::t('happycode', 'Author'),
-            'title' => Yii::t('happycode', 'Title'),
+            'id'          => Yii::t('happycode', 'ID'),
+            'ip'          => Yii::t('happycode', 'IP Address'),
+            'author'      => Yii::t('happycode', 'Author'),
+            'title'       => Yii::t('happycode', 'Title'),
             'description' => Yii::t('happycode', 'Description'),
-            'language' => Yii::t('happycode', 'Language'),
-            'code' => Yii::t('happycode', 'Code'),
-            'approved' => Yii::t('happycode', 'Approved'),
+            'language'    => Yii::t('happycode', 'Language'),
+            'code'        => Yii::t('happycode', 'Code'),
+            'approved'    => Yii::t('happycode', 'Approved'),
             'approved_by' => Yii::t('happycode', 'Approved By'),
-            'added_at' => Yii::t('happycode', 'Added At'),
+            'added_at'    => Yii::t('happycode', 'Added At'),
         ];
     }
 
     public function getCanVote()
     {
-        if(empty(self::$_voted)) self::_loadVoted();
+        if (empty(self::$_voted)) self::_loadVoted();
 
         return !in_array($this->id, self::$_voted);
     }
 
     private static function _loadVoted()
     {
-        self::$_voted = array_map(function($a) { return $a['snippet_id']; }, Vote::find()->select('snippet_id')->where([
-            'ip' => ip2long(Yii::$app->request->userIP),
+        self::$_voted = array_map(function ($a) {
+            return $a['snippet_id'];
+        }, Vote::find()->select('snippet_id')->where([
+            'ip'          => ip2long(Yii::$app->request->userIP),
             'fingerprint' => md5(Yii::$app->request->userAgent)
         ])->asArray()->all());
     }

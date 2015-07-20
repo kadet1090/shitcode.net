@@ -1,11 +1,15 @@
 <?php
-    /** @var \app\models\Code $model  */
-    $parsedown = Parsedown::instance();
+/** @var \app\models\Code $model  */
+$parsedown = Parsedown::instance();
+$class = '';
+if($model->score > 0) $class = 'text-success';
+if($model->score < 0) $class = 'text-danger';
 ?>
 <div class="paste panel panel-default" id="paste-<?=$model->id?>">
     <div class="panel-heading">
         <a href="<?= \yii\helpers\Url::to(['site/paste', 'id' => $model->id ])?>" class="title">#<?= $model->id ?> <?= htmlspecialchars($model->title) ?></a>
         <a href="<?= \yii\helpers\Url::to([Yii::$app->requestedAction->uniqueId, 'language' => $model->language]) ?>" class="language pull-right"><?= array_search($model->language, Yii::$app->params['languages']) ?></a>
+        <strong class="score pull-right <?= $class?>"><?= ($model->score > 0 ? '+' : '').$model->score ?></strong>
     </div>
     <div class="panel-body">
         <pre><code class="lang-<?= $model->language ?>"><?= htmlspecialchars($model->code) ?></code></pre>

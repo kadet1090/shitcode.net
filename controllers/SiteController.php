@@ -7,6 +7,7 @@ use app\models\AddCodeForm;
 use app\models\Code;
 use app\models\Vote;
 use Yii;
+use yii\base\InvalidParamException;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use app\models\ContactForm;
@@ -54,7 +55,7 @@ class SiteController extends Controller
         if($lang)
             $conditions['language'] = $lang;
 
-        $query = $field != 'score' ? Code::find() : Code::findWithScore();
+        $query = Code::find();
         $query->where($conditions)->orderBy([$field => $sort]);
 
         $models = new ActiveDataProvider([
@@ -71,8 +72,22 @@ class SiteController extends Controller
     }
 
     public function actionVote() {
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+        }
+
         $id = Yii::$app->request->getQueryParam('id');
-        $v = Yii::$app->request->getQueryParam('vote');
+        $vote = Yii::$app->request->getQueryParam('vote');
+        switch($vote) {
+            case 'up':
+                $v = 1;
+                break;
+            case 'down':
+                $v = -1;
+                break;
+            default:
+                throw new InvalidParamException('Vote must be up or down!');
+        }
 
         $vote = new Vote([
             'vote' => $v,
@@ -81,18 +96,16 @@ class SiteController extends Controller
             'snippet_id' => $id
         ]);
 
-        if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-        }
-
         if($vote->validate()) {
             $vote->save();
+            $paste = Code::findOne($vote->snippet_id);
 
             $message = Yii::t('happycode', 'Voted!');
             if(Yii::$app->request->isAjax) {
                 return [
                     'id' => $id,
                     'message' => $message,
+                    'score' => $paste->score
                 ];
             } else {
                 AlertHelper::appendAlert('success', $message);
