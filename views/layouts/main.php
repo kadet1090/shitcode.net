@@ -10,8 +10,10 @@ use app\assets\AppAsset;
 /* @var $content string */
 
 AppAsset::register($this);
-nezhelskoy\highlight\HighlightAsset::register($this);
+$hljs = nezhelskoy\highlight\HighlightAsset::register($this);
+\yii\bootstrap\BootstrapPluginAsset::register($this);
 
+$this->registerJs('window.highlightBase = "' . Yii::$app->assetManager->getAssetUrl($hljs, null) . '"');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -27,30 +29,52 @@ nezhelskoy\highlight\HighlightAsset::register($this);
 
 <?php $this->beginBody() ?>
     <div class="wrap">
-        <?php
-            NavBar::begin([
-                'brandLabel' => 'My Company',
-                'brandUrl' => Yii::$app->homeUrl,
-                'options' => [
-                    'class' => 'navbar-inverse navbar-fixed-top',
-                ],
-            ]);
-            echo Nav::widget([
-                'options' => ['class' => 'navbar-nav navbar-right'],
-                'items' => [
-                    ['label' => 'Home', 'url' => ['/site/index']],
-                    ['label' => 'About', 'url' => ['/site/about']],
-                    ['label' => 'Contact', 'url' => ['/site/contact']],
-                    Yii::$app->user->isGuest ?
-                        ['label' => 'Login', 'url' => ['/site/login']] :
-                        ['label' => 'Logout (' . Yii::$app->user->identity->email . ')',
-                            'url' => ['/site/logout'],
-                            'linkOptions' => ['data-method' => 'post']],
-                ],
-            ]);
-            NavBar::end();
-        ?>
-
+        <div class="banner">
+            <div class="container">
+                <ul class="nav nav-pills pull-right">
+                    <li><?= Html::a(Yii::t('happycode', 'Latest'), ['site/latest']) ?></li>
+                    <li><?= Html::a(Yii::t('happycode', 'Browse'), ['site/index']) ?></li>
+                    <li><?= Html::a(Yii::t('happycode', 'Top'), ['site/best']) ?></li>
+                    <li><?= Html::a(Yii::t('happycode', 'Worst'), ['site/worst']) ?></li>
+                    <li class="add">
+                        <?= Html::a(
+                            Yii::t('happycode', 'Add').' '.\app\helpers\BootstrapHelper::glyphicon('plus'),
+                            ['site/add']
+                        ) ?>
+                    </li>
+                    <li class="settings dropdown">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin"><?= \app\helpers\BootstrapHelper::glyphicon('cog') ?></a>
+                        <div class="dropdown-menu dropdown-menu-right" style="padding:15px; width: 350px;">
+                            <?= Html::beginForm(['site/save-settings'], 'post', ['id' => 'settings-form']) ?>
+                                <div class="form-group">
+                                    <label for="theme-settings"><?= Yii::t('happycode', 'Highlight theme:'); ?></label>
+                                    <select name="highlight-style" id="theme-settings" class="form-control">
+                                        <?php foreach(Yii::$app->params['highlight-styles'] as $style => $name):?>
+                                            <option value="<?=$style?>"
+                                                    <?php if($style == Yii::$app->userSettings->highlightStyle): ?>selected="selected"<?php endif; ?>>
+                                                <?= $name ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ace-settings"><?= Yii::t('happycode', 'Editor theme:'); ?></label>
+                                    <select name="ace-style" id="ace-settings" class="form-control">
+                                        <?php foreach(Yii::$app->params['ace-styles'] as $style => $name):?>
+                                            <option value="<?=$style?>"
+                                                    <?php if($style == Yii::$app->userSettings->aceStyle): ?>selected="selected"<?php endif; ?>>
+                                                <?= $name ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <button class="btn btn-block btn-primary">Save</button>
+                            <?= Html::endForm(); ?>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
         <div class="container">
             <?= Breadcrumbs::widget([
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],

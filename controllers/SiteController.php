@@ -96,7 +96,7 @@ class SiteController extends Controller
                 ];
             } else {
                 AlertHelper::appendAlert('success', $message);
-                $this->goBack();
+                return $this->goBack();
             }
         } else {
             Yii::$app->response->statusCode = 403;
@@ -109,9 +109,22 @@ class SiteController extends Controller
                 ];
             } else {
                 AlertHelper::appendAlert('warning', $message);
-                $this->goBack();
+                return $this->goBack();
             }
         }
+    }
+
+    public function actionSaveSettings() {
+        $post = Yii::$app->request->post();
+
+        if(isset($post['ace-style']))
+            Yii::$app->userSettings->aceStyle  = $post['ace-style'];
+
+        if(isset($post['highlight-style']))
+            Yii::$app->userSettings->highlightStyle  = $post['highlight-style'];
+
+        AlertHelper::appendAlert('success', 'Settings saved successfully.');
+        return $this->goBack();
     }
 
     public function actionContact()

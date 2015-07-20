@@ -7,14 +7,14 @@ use yii\helpers\Html;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\AddCodeForm */
 
-$this->title                   = Yii::t('happycode', 'Add Code');
+$this->title                   = Yii::t('happycode', 'Add Paste');
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <div class="site-contact">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <div class="container">
+    <div>
         <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
         <div class="row">
             <div class="col-md-8">
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <?= $form->field($model, 'code')->widget(trntv\aceeditor\AceEditor::className(), [
             'mode'  => $model->language,
-            'theme' => 'monokai'
+            'theme' => Yii::$app->userSettings->aceStyle
         ])->hint(Yii::t('happycode',
             'You can paste whatever shitty code you want, remember that this code will be (hopefully) available to everyone!'
         )) ?>
@@ -49,7 +49,9 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 <?php
 $this->registerJs(<<<JS
-jQuery('#addcodeform-language').on('change', function() {
+window.aceeditor = aceeditor_w0;
+
+jQuery('#addcodeform-language').selectize().on('change', function() {
     aceeditor_w0.getSession().setMode('ace/mode/' + $(this).val());
 });
 JS
