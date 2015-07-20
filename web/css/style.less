@@ -15,7 +15,7 @@
     border: none;
     border-radius: 0;
     margin: -15px;
-    overflow: scroll;
+    overflow: auto;
     word-break: keep-all;
     word-wrap: normal;
 
@@ -94,29 +94,67 @@
   }
 }
 
+
+
 .banner {
   height: 400px;
   background: url('../img/banner.png') center;
   padding: 50px 0;
 
+  z-index: 11;
+
+  #nav-affix {
+    width: 100%;
+  }
+
+  .brand {
+    font-size: 48pt;
+    font-family: monospace;
+    color: white;
+    text-decoration: none;
+  }
+
+  .affix {
+    z-index: 10;
+    .container-fluid {
+      margin-top: -50px;
+      background: #0F0F0C;
+      z-index: 10;
+    }
+
+    .brand {
+      font-size: 18pt;
+      line-height: 47px;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+  
   .nav-pills {
-    li a {
+    z-index: 12;
+
+    & > li > a {
       background: none;
       font-weight: bold;
       font-size: 14pt;
       color: white;
-
+      border-radius: 0;
       &:hover {
         background: rgba(255, 255, 255, .1);
       }
     }
 
-    li.add a {
+    & > li.open > a {
+      background: rgba(255, 255, 255, .2);
+    }
+
+    & > li.add > a {
       background: #3c763d;
     }
 
-    li.active a {
-      color: #337AB7;
+    & > li.active > a {
+      background: #337AB7;
+      color: white;
     }
   }
 }

@@ -115,4 +115,8 @@ SQL
             ];
         }, $count);
     }
+
+    public static function countPending() {
+        return Code::find()->where(['approved' => 0])->count();
+    }
 }

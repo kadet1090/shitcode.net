@@ -23,10 +23,9 @@ class AdminController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only'  => ['logout'],
+                'only'  => ['logout', 'add-admin', 'admins', 'pending', 'change-status'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
                         'allow'   => true,
                         'roles'   => ['@'],
                     ],
