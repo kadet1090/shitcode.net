@@ -95,4 +95,24 @@ SQL
     {
         return $this->hasOne(Admin::className(), ['id' => 'approved_by']);
     }
+
+    public static function getLanguages()
+    {
+        $labels = array_flip(Yii::$app->params['languages']);
+
+        $count = self::find()
+            ->select('language, COUNT(*) as `count`')
+            ->where(['approved' => 1])
+            ->groupBy('language')
+            ->asArray()
+            ->all();
+
+        return array_map(function($language) use ($labels) {
+            return [
+                'label' => $labels[$language['language']],
+                'language' => $language['language'],
+                'count' => $language['count'],
+            ];
+        }, $count);
+    }
 }

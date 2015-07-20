@@ -60,3 +60,36 @@
 .pastes {
   max-width: 1000px;
 }
+
+.alerts.fixed {
+  position: fixed;
+  top: 100px;
+  z-index: 100;
+}
+
+.languages {
+  padding-left: 0;
+
+  li {
+    float: left;
+    list-style: none;
+
+    a {
+      padding: 15px;
+      color: #777;
+      font-weight: bold;
+      font-size: 18pt;
+      line-height: 22pt;
+    }
+
+    &.selected {
+      border-left: #444 5px solid;
+      a {
+        color: #444;
+        .badge {
+          background: #444;
+        }
+      }
+    }
+  }
+}

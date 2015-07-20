@@ -5,10 +5,12 @@ namespace app\controllers;
 use app\helpers\AlertHelper;
 use app\models\AddCodeForm;
 use app\models\Code;
+use app\models\Vote;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use app\models\ContactForm;
+use yii\web\Response;
 
 class SiteController extends Controller
 {
@@ -37,12 +39,12 @@ class SiteController extends Controller
 
     public function actionBest()
     {
-        return $this->_sorted('score', SORT_ASC);
+        return $this->_sorted('score', SORT_DESC);
     }
 
     public function actionWorst()
     {
-        return $this->_sorted('score', SORT_DESC);
+        return $this->_sorted('score', SORT_ASC);
     }
 
     private function _sorted($field, $sort) {
@@ -63,8 +65,53 @@ class SiteController extends Controller
         ]);
 
         return $this->render('index', [
-            'models' => $models
+            'models' => $models,
+            'languages' => Code::getLanguages()
         ]);
+    }
+
+    public function actionVote() {
+        $id = Yii::$app->request->getQueryParam('id');
+        $v = Yii::$app->request->getQueryParam('vote');
+
+        $vote = new Vote([
+            'vote' => $v,
+            'ip' => ip2long(Yii::$app->request->userIP),
+            'fingerprint' => md5(Yii::$app->request->userAgent),
+            'snippet_id' => $id
+        ]);
+
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+        }
+
+        if($vote->validate()) {
+            $vote->save();
+
+            $message = Yii::t('happycode', 'Voted!');
+            if(Yii::$app->request->isAjax) {
+                return [
+                    'id' => $id,
+                    'message' => $message,
+                ];
+            } else {
+                AlertHelper::appendAlert('success', $message);
+                $this->goBack();
+            }
+        } else {
+            Yii::$app->response->statusCode = 403;
+
+            $message = Yii::t('happycode', 'Already voted on this paste.');
+            if(Yii::$app->request->isAjax) {
+                return [
+                    'id' => $id,
+                    'message' => $message,
+                ];
+            } else {
+                AlertHelper::appendAlert('warning', $message);
+                $this->goBack();
+            }
+        }
     }
 
     public function actionContact()

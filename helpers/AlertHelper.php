@@ -21,8 +21,6 @@ class AlertHelper
 {
     public static function appendAlert($type, $message, $options = [])
     {
-        if(!isset($_SESSION['alerts'])) $_SESSION['alerts'] = [];
-
         array_push($_SESSION['alerts'], [
             'type' => $type,
             'message' => $message,
@@ -32,8 +30,6 @@ class AlertHelper
 
     public static function prependAlert($type, $message, $options = [])
     {
-        if(!isset($_SESSION['alerts'])) $_SESSION['alerts'] = [];
-
         array_unshift($_SESSION['alerts'], [
             'type' => $type,
             'message' => $message,
@@ -70,3 +66,10 @@ class AlertHelper
         return Html::tag('div', $dismiss.$message, $options);
     }
 }
+
+// So, php cannot into static constructors.
+
+if (!Yii::$app->session->isActive)
+    Yii::$app->session->open();
+
+if(!isset($_SESSION['alerts'])) $_SESSION['alerts'] = [];
