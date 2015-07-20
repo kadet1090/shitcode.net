@@ -22,12 +22,61 @@ use Yii;
  */
 class Code extends \yii\db\ActiveRecord
 {
+    protected static $_voted;
+
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return 'code';
+    }
+
+    public static function findWithScore()
+    {
+        // TODO: replace that sweet monster with something more appropriate
+        $query = Code::find()->from(
+            <<<'SQL'
+(
+    select c.*, sum(v.vote) as score
+    from code c left join votes v on v.snippet_id = c.id
+    group by c.id
+
+    union
+
+    select c.*, sum(v.vote) as score
+    from code c
+    left join votes v on v.snippet_id = c.id
+    where v.snippet_id is null
+) as code
+SQL
+        );
+
+        return $query;
+    }
+
+    public static function getLanguages()
+    {
+        $labels = array_flip(Yii::$app->params['languages']);
+
+        $count = self::find()
+            ->select('language, COUNT(*) as `count`')
+            ->where(['approved' => 1])
+            ->groupBy('language')
+            ->asArray()
+            ->all();
+
+        return array_map(function($language) use ($labels) {
+            return [
+                'label' => $labels[$language['language']],
+                'language' => $language['language'],
+                'count' => $language['count'],
+            ];
+        }, $count);
+    }
+
+    public static function countPending() {
+        return Code::find()->where(['approved' => 0])->count();
     }
 
     /**
@@ -65,27 +114,19 @@ class Code extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function findWithScore()
+    public function getCanVote()
     {
-        // TODO: replace that sweet monster with something more appropriate
-        $query = Code::find()->from(
-            <<<'SQL'
-(
-    select c.*, sum(v.vote) as score
-    from code c left join votes v on v.snippet_id = c.id
-    group by c.id
+        if(empty(self::$_voted)) self::_loadVoted();
 
-    union
+        return !in_array($this->id, self::$_voted);
+    }
 
-    select c.*, sum(v.vote) as score
-    from code c
-    left join votes v on v.snippet_id = c.id
-    where v.snippet_id is null
-) as code
-SQL
-        );
-
-        return $query;
+    private static function _loadVoted()
+    {
+        self::$_voted = array_map(function($a) { return $a['snippet_id']; }, Vote::find()->select('snippet_id')->where([
+            'ip' => ip2long(Yii::$app->request->userIP),
+            'fingerprint' => md5(Yii::$app->request->userAgent)
+        ])->asArray()->all());
     }
 
     /**
@@ -94,29 +135,5 @@ SQL
     public function getApprovedBy()
     {
         return $this->hasOne(Admin::className(), ['id' => 'approved_by']);
-    }
-
-    public static function getLanguages()
-    {
-        $labels = array_flip(Yii::$app->params['languages']);
-
-        $count = self::find()
-            ->select('language, COUNT(*) as `count`')
-            ->where(['approved' => 1])
-            ->groupBy('language')
-            ->asArray()
-            ->all();
-
-        return array_map(function($language) use ($labels) {
-            return [
-                'label' => $labels[$language['language']],
-                'language' => $language['language'],
-                'count' => $language['count'],
-            ];
-        }, $count);
-    }
-
-    public static function countPending() {
-        return Code::find()->where(['approved' => 0])->count();
     }
 }

@@ -32,8 +32,12 @@ $max = max($counts);
 
     <?php foreach($models->models as $model)
         echo Paste::widget(['model' => $model, 'actions' => [
-            \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-up"></span>', ['site/vote', 'id' => $model->id, 'vote' => 1], ['class' => 'btn btn-success vote-up']),
-            \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-down"></span>', ['site/vote', 'id' => $model->id, 'vote' => -1], ['class' => 'btn btn-danger vote-down']),
+            \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-up"></span>', ['site/vote', 'id' => $model->id, 'vote' => 1], [
+                'class' => 'btn btn-success vote-up'.($model->canVote ? '' : ' disabled')
+            ]),
+            \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-down"></span>', ['site/vote', 'id' => $model->id, 'vote' => -1], [
+                'class' => 'btn btn-danger vote-down'.($model->canVote ? '' : ' disabled')
+            ]),
             \yii\helpers\Html::a('Comments', ['site/paste', 'id' => $model->id, '#' => 'disqus_thread'], ['class' => 'btn btn-info']),
         ]]);
     ?>
