@@ -14,7 +14,8 @@ $max = max($counts);
 <div class="container pastes">
     <ul class="languages clearfix">
         <li <?php if(!isset($_GET['language'])): ?>class="selected"<?php endif;?>>
-            <a href="<?= \yii\helpers\Url::to([Yii::$app->requestedAction->uniqueId]) ?>">
+            <a href="<?= \yii\helpers\Url::to([Yii::$app->requestedAction->uniqueId]) ?>"
+               style="font-size: 26pt">
                 <?= Yii::t('happycode', 'All') ?>
                 <span class="badge"><?= array_sum($counts); ?></span>
             </a>
@@ -36,6 +37,8 @@ $max = max($counts);
             \yii\helpers\Html::a('Comments', ['site/paste', 'id' => $model->id, '#' => 'disqus_thread'], ['class' => 'btn btn-info']),
         ]]);
     ?>
+
+    <?= \yii\widgets\LinkPager::widget(['pagination' => $models->pagination]); ?>
 </div>
 
 <?php

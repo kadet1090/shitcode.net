@@ -4,7 +4,7 @@
 ?>
 <div class="paste panel panel-default" id="paste-<?=$model->id?>">
     <div class="panel-heading">
-        <a href="<?= \yii\helpers\Url::to(['site/paste', 'id' => $model->id ])?>" class="title">#<?= $model->id ?> <?= $model->title ?></a>
+        <a href="<?= \yii\helpers\Url::to(['site/paste', 'id' => $model->id ])?>" class="title">#<?= $model->id ?> <?= htmlspecialchars($model->title) ?></a>
         <a href="<?= \yii\helpers\Url::to([Yii::$app->requestedAction->uniqueId, 'language' => $model->language]) ?>" class="language pull-right"><?= array_search($model->language, Yii::$app->params['languages']) ?></a>
     </div>
     <div class="panel-body">
@@ -16,7 +16,7 @@
             <?php foreach($actions as $action) echo $action ?>
         </div>
         <div class="author pull-right">
-            <?= Yii::t('happycode', 'By <em>{author}</em>', ['author' => $model->author ]) ?>,
+            <?= Yii::t('happycode', 'By <em>{author}</em>', ['author' => !empty($model->author) ? htmlspecialchars($model->author) : Yii::t('happycode', 'Anonymous') ]) ?>,
             <?= $model->added_at ?>
         </div>
     </div>

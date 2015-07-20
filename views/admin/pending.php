@@ -35,6 +35,8 @@ $parsedown = Parsedown::instance();
     ]]);
 } ?>
 
+<?= \yii\widgets\LinkPager::widget(['pagination' => $pending->pagination]); ?>
+
 <?php
 $url = \yii\helpers\Url::to(['admin/change-status']);
 
