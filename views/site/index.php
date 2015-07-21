@@ -5,7 +5,8 @@ use app\widgets\Paste;
 /* @var $models \yii\data\ActiveDataProvider */
 /* @var $languages Array */
 
-$this->title = 'ShitCode';
+$this->title = $action;
+
 $counts = array_map(function($l) { return $l['count']; }, $languages);
 $max = max($counts);
 

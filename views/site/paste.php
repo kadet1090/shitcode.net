@@ -6,10 +6,16 @@ use yii\helpers\Html;
 
 $this->title = 'Paste';
 $this->params['breadcrumbs'][] = $this->title;
+
+$this->registerJsFile('js/voting.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
 ?>
 <?= \app\widgets\Paste::widget(['model' => $model, 'actions' => [
-    \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-up"></span>', '#', ['class' => 'btn btn-success']),
-    \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-down"></span>', '#', ['class' => 'btn btn-danger']),
+    \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-up"></span>', ['site/vote', 'id' => $model->id, 'vote' => 'up'], [
+        'class' => 'btn btn-success vote-up'.($model->canVote ? '' : ' disabled')
+    ]),
+    \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-down"></span>', ['site/vote', 'id' => $model->id, 'vote' => 'down'], [
+        'class' => 'btn btn-danger vote-down'.($model->canVote ? '' : ' disabled')
+    ]),
 ]]) ?>
 
 <div id="disqus_thread"></div>

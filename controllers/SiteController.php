@@ -30,25 +30,25 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->_sorted('id', SORT_ASC);
+        return $this->_sorted('id', SORT_ASC, Yii::t('happycode', 'All'));
     }
 
     public function actionLatest()
     {
-        return $this->_sorted('id', SORT_DESC);
+        return $this->_sorted('id', SORT_DESC, Yii::t('happycode', 'Latest'));
     }
 
     public function actionBest()
     {
-        return $this->_sorted('score', SORT_DESC);
+        return $this->_sorted('score', SORT_DESC, Yii::t('happycode', 'Top Rated'));
     }
 
     public function actionWorst()
     {
-        return $this->_sorted('score', SORT_ASC);
+        return $this->_sorted('score', SORT_ASC, Yii::t('happycode', 'Worst'));
     }
 
-    private function _sorted($field, $sort) {
+    private function _sorted($field, $sort, $action) {
         $lang = Yii::$app->request->getQueryParam('language');
 
         $conditions = ['approved' => 1];
@@ -67,7 +67,8 @@ class SiteController extends Controller
 
         return $this->render('index', [
             'models' => $models,
-            'languages' => Code::getLanguages()
+            'languages' => Code::getLanguages(),
+            'action' => $action,
         ]);
     }
 

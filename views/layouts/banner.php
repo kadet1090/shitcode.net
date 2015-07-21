@@ -7,7 +7,7 @@ use yii\helpers\Url;
     <div id="nav-affix">
         <div class="container-fluid">
             <div class="container">
-                <a class="pull-left brand" href="/">shitcode</a>
+                <a class="pull-left brand" href="/"><?= Yii::$app->name ?></a>
                 <ul class="nav nav-pills pull-right">
                     <li <?php if(Yii::$app->requestedAction->uniqueId == 'site/latest'): ?>class="active"<?php endif;?>>
                         <?= Html::a(Yii::t('happycode', 'Latest'), ['site/latest']) ?>

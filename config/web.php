@@ -3,7 +3,8 @@
 $params = require(__DIR__ . '/params.php');
 
 $config = [
-    'id' => 'basic',
+    'id' => 'shitcode',
+    'name' => 'shitcode',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'userSettings'],
     'defaultRoute' => 'site/latest',
