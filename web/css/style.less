@@ -49,7 +49,7 @@
     font-weight: bold;
   }
 
-  .actions {
+  .actions-wrapper {
     margin: -10px -15px;
     .btn {
       border: none;
@@ -57,6 +57,28 @@
       line-height: 30px;
       padding-left: 15px;
       padding-right: 15px;
+    }
+  }
+
+  .author {
+    text-align: right
+  }
+
+  @media (max-width: 768px) {
+    .author {
+      line-height: 30px;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .actions {
+      width: 100%;
+
+      .btn {
+        display: table-cell; // well, some kind of fucking hack
+        float: none;
+        width: 1%;
+      }
     }
   }
 }

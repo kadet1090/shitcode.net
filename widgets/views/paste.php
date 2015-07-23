@@ -15,13 +15,19 @@ if($model->score < 0) $class = 'text-danger';
         <pre><code class="hljs <?= $model->language ?>"><?= htmlspecialchars($model->code) ?></code></pre>
         <?php if(!empty($model->description)): ?><div class="description"><?= $parsedown->parse($model->description); ?></div><?php endif; ?>
     </div>
-    <div class="panel-footer">
-        <div class="btn-group actions">
-            <?php foreach($actions as $action) echo $action ?>
-        </div>
-        <div class="author pull-right">
-            <?= Yii::t('happycode', 'By <em>{author}</em>', ['author' => !empty($model->author) ? htmlspecialchars($model->author) : Yii::t('happycode', 'Anonymous') ]) ?>,
-            <?= $model->added_at ?>
+    <div class="panel-footer post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="actions-wrapper">
+                    <div class="btn-group actions clearfix">
+                        <?php foreach($actions as $action) echo $action ?>
+                    </div>
+                </div>
+            </div>
+            <div class="author col-md-6">
+                <?= Yii::t('happycode', 'By <em>{author}</em>', ['author' => !empty($model->author) ? htmlspecialchars($model->author) : Yii::t('happycode', 'Anonymous') ]) ?>,
+                <?= $model->added_at ?>
+            </div>
         </div>
     </div>
 </div>
