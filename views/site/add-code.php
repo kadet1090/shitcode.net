@@ -21,7 +21,19 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'title') ?>
             </div>
             <div class="col-md-4">
-                <?= $form->field($model, 'language')->dropDownList(array_flip(Yii::$app->params['languages'])) ?>
+                <div class="form-group field-addcodeform-language required">
+                    <label class="control-label" for="addcodeform-language"><?= $model->getAttributeLabel('language'); ?></label>
+                    <select id="addcodeform-language" class="form-control" name="AddCodeForm[language]">
+                        <?php foreach(Yii::$app->languages->languages as $lang): ?>
+                            <option data-ace-mode="<?= $lang['ace'] ?>"
+                                    <?php if($lang['hljs'] == $model->language): ?>selected="selected"<?php endif; ?>
+                                    value="<?= $lang['hljs'] ?>">
+                                <?= $lang['label'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                    <p class="help-block help-block-error"></p>
+                </div>
             </div>
         </div>
         <?= $form->field($model, 'code')->widget(trntv\aceeditor\AceEditor::className(), [
@@ -48,11 +60,19 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 </div>
 <?php
-$this->registerJs(<<<JS
+$this->registerJs(<<<'JS'
 window.aceeditor = aceeditor_w0;
 
-jQuery('#addcodeform-language').selectize().on('change', function() {
-    aceeditor_w0.getSession().setMode('ace/mode/' + $(this).val());
+jQuery('#addcodeform-language').selectize({
+    onInitialize: function () {
+        var s = this;
+        this.revertSettings.$children.each(function () {
+            $.extend(s.options[this.value], $(this).data());
+        });
+    },
+    onChange: function(e){
+        aceeditor_w0.getSession().setMode('ace/mode/' + this.options[e].aceMode);
+    }
 });
 JS
 );

@@ -67,8 +67,11 @@ $config = [
             'class' => 'app\components\UserSettings',
             'defaultHighlightStyle' => 'zenburn',
             'defaultAceStyle' => 'monokai',
-        ]
-
+        ],
+        'languages' => [
+            'class' => 'app\components\SupportedLanguages',
+            'languages' => require(__DIR__.'/languages.php'),
+        ],
     ],
     'params' => $params,
 ];

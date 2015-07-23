@@ -4,6 +4,7 @@ return [
     'adminEmail'       => 'admin@happycode.io',
     'per-page'         => 15,
     'languages'        => [
+        'Plaintext'    => 'nohighlight',
         'ABAP'         => 'abap',
         'ABC'          => 'abc',
         'ActionScript' => 'actionscript',

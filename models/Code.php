@@ -48,7 +48,7 @@ class Code extends \yii\db\ActiveRecord
 
     public static function getLanguages()
     {
-        $labels = array_flip(Yii::$app->params['languages']);
+        $labels = Yii::$app->languages->hljs;
 
         $count = self::find()
             ->select('language, COUNT(*) as `count`')
