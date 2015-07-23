@@ -29,11 +29,14 @@ $config = [
             'enablePrettyUrl' => true,
             'rules' => array(
                 'vote/<vote:(up|down)>/<id:\d+>' => 'site/vote',
+                '<action:\w+>/language/<language:\w+>/page/<page:\d+>' => 'site/<action>',
                 '<action:\w+>/language/<language:\w+>' => 'site/<action>',
                 '<id:\d+>' => 'site/paste',
+                '<action:\w+>/page/<page:\d+>' => 'site/<action>',
                 '<action:\w+>' => 'site/<action>',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>/page/<page:\d+>' => '<controller>/<action>',
             ),
         ],
         'errorHandler' => [
