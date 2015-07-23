@@ -50,8 +50,12 @@ $this->registerJs($affix);
 
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; Kadet <?= date('Y') ?>, <?= Yii::powered() ?></p>
-            <p class="pull-right"><?= Html::a('Admin', ['admin/login']) ?></p>
+            <p class="pull-left">&copy; Shitcode.net <?= date('Y') ?>, <?= Yii::powered() ?></p>
+            <p class="pull-right">
+                <a href="https://github.com/kadet1090/shitcode.net">GitHub</a> &bullet;
+                <?= Html::a('About', ['site/about']) ?> &bullet;
+                <?= Html::a('Admin', ['admin/login']) ?>
+            </p>
         </div>
     </footer>
 

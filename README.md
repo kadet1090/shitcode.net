@@ -1,92 +1,84 @@
-Yii 2 Basic Project Template
-============================
+[Shitcode](http://shitcode.net) [codename happycode]
+====================================================
 
-Yii 2 Basic Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
-rapidly creating small projects.
+Shitty code can occur almost everywhere, on every moment of your life,
+[Shitcode](http://shitcode.net) is place for storing (And sharing too!) worst of our programming
+nightmares. Created as weekend project (So it's shitty as well) because... why not?
 
-The template contains the basic features including user login/logout and a contact page.
-It includes all commonly used configurations that would allow you to focus on adding new
-features to your application.
-
-[![Latest Stable Version](https://poser.pugx.org/yiisoft/yii2-app-basic/v/stable.png)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Total Downloads](https://poser.pugx.org/yiisoft/yii2-app-basic/downloads.png)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Build Status](https://travis-ci.org/yiisoft/yii2-app-basic.svg?branch=master)](https://travis-ci.org/yiisoft/yii2-app-basic)
-
-DIRECTORY STRUCTURE
--------------------
-
-      assets/             contains assets definition
-      commands/           contains console commands (controllers)
-      config/             contains application configurations
-      controllers/        contains Web controller classes
-      mail/               contains view files for e-mails
-      models/             contains model classes
-      runtime/            contains files generated during runtime
-      tests/              contains various tests for the basic application
-      vendor/             contains dependent 3rd-party packages
-      views/              contains view files for the Web application
-      web/                contains the entry script and Web resources
-
+So if you have some shitty project or code and want to share it go ahead. 
+Any contributions are welcome, including PRs, and bug reports.
 
 
 REQUIREMENTS
 ------------
 
-The minimum requirement by this project template that your Web server supports PHP 5.4.0.
-
+PHP >= 5.4 (5.5 recommended because of `array_column`), some server, and cup of coffee (for me).
 
 INSTALLATION
 ------------
 
-### Install from an Archive File
+Just clone this repo into some working directory (you should know how to do that) and install dependencies with composer:
+```
+php /path/to/composer.phar install
+```
 
-Extract the archive file downloaded from [yiiframework.com](http://www.yiiframework.com/download/) to
-a directory named `basic` that is directly under the Web root.
+### WebServer
 
-You can then access the application through the following URL:
+Your domain (I recommend using something like shitcode.dev) should point to `/web/` folder, example config in apache:
+```apache
+<VirtualHost *:80>
+    ServerAdmin webmaster@shitcode.dev
+    DocumentRoot "/path/to/shitcode/web"
+    ServerName shitcode.dev
+    ErrorLog "logs/shitcode-error.log"
+    CustomLog "logs/shitcode-access.log" common
+</VirtualHost>
+```
 
-~~~
-http://localhost/basic/web/
-~~~
+Or in nginx (including rewrite!):
+```nginx
+server {
+    listen 80;
+    root /path/to/shitcode/web/;
+    server_name shitcode.dev;
 
+    index index.php;
 
-### Install via Composer
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+}
+```
 
-If you do not have [Composer](http://getcomposer.org/), you may install it by following the instructions
-at [getcomposer.org](http://getcomposer.org/doc/00-intro.md#installation-nix).
-
-You can then install this project template using the following command:
-
-~~~
-php composer.phar global require "fxp/composer-asset-plugin:~1.0.0"
-php composer.phar create-project --prefer-dist --stability=dev yiisoft/yii2-app-basic basic
-~~~
-
-Now you should be able to access the application through the following URL, assuming `basic` is the directory
-directly under the Web root.
-
-~~~
-http://localhost/basic/web/
-~~~
-
-
-CONFIGURATION
--------------
+You can define alias too, but I assume that you know how to do it.
 
 ### Database
 
-Edit the file `config/db.php` with real data, for example:
+Create database on your server, import tables from file `schema.sql` and fill `config/db.php` with your data, for example:
 
 ```php
-return [
+<?php return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
+    'dsn' => 'mysql:host=localhost;dbname=shitcode',
     'username' => 'root',
     'password' => '1234',
     'charset' => 'utf8',
 ];
 ```
 
-**NOTE:** Yii won't create the database for you, this has to be done manually before you can access it.
+Oh, and you have to configure mailer in `config/mailer.php`:
+```php
+<?php return [
+    'class' => 'yii\swiftmailer\Mailer',
+    'useFileTransport' => true,
+];
+```
 
-Also check and edit the other files in the `config/` directory to customize your application.
+Now you're ready to go and login using admin `admin@shitcode.test` and password `admin`.
+
+License
+=======
+[CreativeCommons BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/3.0/us/)
+
+
+Oh, and yes, I know about [r/badcode](https://www.reddit.com/r/badcode) and [govnokod.ru](http://govnokod.ru).
