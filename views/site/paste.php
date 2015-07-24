@@ -8,6 +8,7 @@ $this->title = 'Paste';
 $this->params['breadcrumbs'][] = $this->title;
 
 $this->registerJsFile('js/voting.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+$this->registerMetaTag(['name' => 'keywords', 'content' => implode(', ', Yii::$app->params["keywords"] + [$model->language])], 'keywords');
 ?>
 <?= \app\widgets\Paste::widget(['model' => $model, 'actions' => [
     \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-up"></span>', ['site/vote', 'id' => $model->id, 'vote' => 'up'], [
