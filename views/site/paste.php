@@ -12,10 +12,12 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => implode(', ', Yii::$a
 ?>
 <?= \app\widgets\Paste::widget(['model' => $model, 'actions' => [
     \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-up"></span>', ['site/vote', 'id' => $model->id, 'vote' => 'up'], [
-        'class' => 'btn btn-success vote-up'.($model->canVote ? '' : ' disabled')
+        'class' => 'btn btn-success vote-up'.($model->canVote ? '' : ' disabled'),
+        'rel' => 'nofollow',
     ]),
     \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-down"></span>', ['site/vote', 'id' => $model->id, 'vote' => 'down'], [
-        'class' => 'btn btn-danger vote-down'.($model->canVote ? '' : ' disabled')
+        'class' => 'btn btn-danger vote-down'.($model->canVote ? '' : ' disabled'),
+        'rel' => 'nofollow',
     ]),
 ]]) ?>
 

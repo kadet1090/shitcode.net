@@ -57,7 +57,7 @@ $this->registerMetaTag(['name' => 'description', 'content' => Yii::$app->params[
             <p class="pull-right">
                 <a href="https://github.com/kadet1090/shitcode.net">GitHub</a> &bullet;
                 <?= Html::a('About', ['site/about']) ?> &bullet;
-                <?= Html::a('Admin', ['admin/login']) ?>
+                <?= Html::a('Admin', ['admin/login'], ['rel' => 'nofollow']) ?>
             </p>
         </div>
     </footer>

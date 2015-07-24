@@ -35,10 +35,12 @@ $this->registerJsFile('js/voting.js', ['depends' => [\yii\web\JqueryAsset::class
     <?php foreach($models->models as $model)
         echo Paste::widget(['model' => $model, 'actions' => [
             \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-up"></span>', ['site/vote', 'id' => $model->id, 'vote' => 'up'], [
-                'class' => 'btn btn-success vote-up'.($model->canVote ? '' : ' disabled')
+                'class' => 'btn btn-success vote-up'.($model->canVote ? '' : ' disabled'),
+                'rel' => 'nofollow',
             ]),
             \yii\helpers\Html::a('<span class="glyphicon glyphicon-thumbs-down"></span>', ['site/vote', 'id' => $model->id, 'vote' => 'down'], [
-                'class' => 'btn btn-danger vote-down'.($model->canVote ? '' : ' disabled')
+                'class' => 'btn btn-danger vote-down'.($model->canVote ? '' : ' disabled'),
+                'rel' => 'nofollow',
             ]),
             \yii\helpers\Html::a('Comments', ['site/paste', 'id' => $model->id, '#' => 'disqus_thread'], ['class' => 'btn btn-info']),
         ]]);
