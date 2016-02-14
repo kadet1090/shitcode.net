@@ -78,6 +78,7 @@ use yii\helpers\Url;
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <li><a href="<?= Url::to(['admin/pending']) ?>"><?= Yii::t('happycode', 'Pending'); ?> <span class="badge"><?= \app\models\Code::countPending() ?></span></a></li>
                                     <li><a href="<?= Url::to(['admin/add-admin']) ?>"><?= Yii::t('happycode', 'Add admin'); ?></a></li>
+                                    <li><a href="<?= Url::to(['admin/test-email']) ?>"><?= Yii::t('happycode', 'Test Email'); ?></a></li>
                                     <li><a href="<?= Url::to(['admin/change-password']) ?>"><?= Yii::t('happycode', 'Change password'); ?></a></li>
                                     <li><a href="<?= Url::to(['admin/logout']) ?>"><?= Yii::t('happycode', 'Logout'); ?></a></li>
                                 </ul>

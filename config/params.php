@@ -1,6 +1,6 @@
 <?php
 
-return [
+return array_merge([
     'adminEmail'       => 'admin@happycode.io',
     'per-page'         => 15,
     'highlight-styles' => [
@@ -104,4 +104,4 @@ return [
     ],
     'keywords' => ['shitcode', 'bad programming', 'bad code', 'programming', 'funny code', 'code'],
     'description' => 'Home for shitty code from whole globe',
-];
+], require(__DIR__ . '/params-local.php'));

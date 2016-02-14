@@ -28,3 +28,4 @@ phpunit.phar
 
 /config/db.php
 /config/mailer.php
+#/config/params-local.php
