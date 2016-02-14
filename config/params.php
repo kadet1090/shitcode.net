@@ -102,6 +102,6 @@ return array_merge([
         'vibrant_ink'             => 'vibrant ink',
         'xcode'                   => 'xcode',
     ],
-    'keywords' => ['shitcode', 'bad programming', 'bad code', 'programming', 'funny code', 'code'],
-    'description' => 'Home for shitty code from whole globe',
+    'keywords' => ['shitcode', 'bad programming', 'bad code', 'programming', 'funny code', 'code', 'shitty code', 'shit code'],
+    'description' => 'shitcode.net - a home for shittiest code from all over the world',
 ], require(__DIR__ . '/params-local.php'));
