@@ -62,6 +62,15 @@ use yii\helpers\Url;
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
+                                <?php if(!Yii::$app->user->isGuest): ?>
+                                    <div class="form-group">
+                                        <label for="inform-about-pastes"><?= Yii::t('happycode', 'Inform about new pastes:'); ?></label>
+                                        <input type="checkbox" class="pull-right"
+                                               id="inform-about-pastes" name="inform"
+                                               <?php if(Yii::$app->user->identity->inform): ?>checked="checked"<?php endif ?>
+                                        />
+                                    </div>
+                                <?php endif; ?>
                                 <button class="btn btn-block btn-primary">Save</button>
                                 <?= Html::endForm(); ?>
                             </div>

@@ -137,6 +137,11 @@ class SiteController extends Controller
         if(isset($post['highlight-style']))
             Yii::$app->userSettings->highlightStyle  = $post['highlight-style'];
 
+        if(!Yii::$app->user->isGuest) {
+            Yii::$app->user->identity->inform = (isset($post['inform']) && $post['inform'] == 'on') ? true : false;
+            Yii::$app->user->identity->save();
+        }
+
         AlertHelper::appendAlert('success', 'Settings saved successfully.');
         return $this->goBack();
     }
