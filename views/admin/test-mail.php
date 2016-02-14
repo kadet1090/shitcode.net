@@ -6,18 +6,11 @@ use yii\bootstrap\ActiveForm;
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\LoginForm */
 
-$this->title = Yii::t('happycode', 'Add Admin');
+$this->title = Yii::t('happycode', 'Sent test message');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <div class="alert alert-warning">
-        <?= \Yii::t(
-            'happycode',
-            'Think twice before giving admin access to someone, remember that she/he will have same privileges as you!'
-        ); ?>
-    </div>
 
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',
@@ -32,12 +25,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= $form->field($model, 'message', [
         'template' => "{label}\n<div class=\"col-lg-11\">{input}\n{hint}\n{error}</div>"
     ])->textarea()->hint(
-        Yii::t('happycode', 'You can send additional message to new admin using this field.')
+        Yii::t('happycode', 'You can send additional message using this field.')
     ); ?>
 
     <div class="form-group">
         <div class="col-lg-offset-1 col-lg-11">
-            <?= Html::submitButton('Add', ['class' => 'btn btn-primary', 'name' => 'add-button']) ?>
+            <?= Html::submitButton('Send', ['class' => 'btn btn-primary', 'name' => 'send-button']) ?>
         </div>
     </div>
 

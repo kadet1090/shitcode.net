@@ -9,6 +9,7 @@ use app\models\Admin;
 use app\models\ChangePasswordForm;
 use app\models\Code;
 use app\models\LoginForm;
+use app\models\TestEmailForm;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -66,6 +67,19 @@ class AdminController extends Controller
             return $this->goBack();
         } else {
             return $this->render('add-admin', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    public function actionTestEmail()
+    {
+        $model = new TestEmailForm();
+        if ($model->load(Yii::$app->request->post()) && $model->send()) {
+            AlertHelper::appendAlert('success', Yii::t('happycode', 'Email was sent to {email}', ['email' => $model->email]));
+            return $this->goBack();
+        } else {
+            return $this->render('test-mail', [
                 'model' => $model,
             ]);
         }
